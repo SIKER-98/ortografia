@@ -1,5 +1,4 @@
 import word from './components/game/word'
-import {useAuth} from "./context/auth";
 
 
 export let TETROMINOS = {

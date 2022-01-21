@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import Stage from './Stage'
 import Display from './Display'
@@ -35,6 +35,17 @@ const Game = (props) => {
         }
     }
 
+    useEffect(()=>{
+        if(!gameOver)return
+
+        const score = word.points
+        const passed = word.correct
+        const failed = word.wrong
+
+        // TU JEST MIESJCE NA TWOJE ZAPYTANIE Z WYNIKAMI
+
+    }, [gameOver])
+
     const startGame = () => {
         //reset
         setStage(createStage());
@@ -50,7 +61,7 @@ const Game = (props) => {
         if (!checkCollision(player, stage, {x: 0, y: 1})) {
             updatePlayerPos({x: 0, y: 1, collided: false})
         } else {
-            if (player.pos.y < 1) {
+            if (player.pos.y < 1 || gameOver) {
                 console.log("GAME OVER");
                 setGameOver(true);
                 setDropTime(null);
@@ -86,7 +97,7 @@ const Game = (props) => {
                             <Display text={`Punkty: ${word.points}`}/>
                             <Display text={`Poprawnych: ${word.correct}`}/>
                             <Display text={`Błędne: ${word.wrong}`}/>
-                            <GapContainer resetPlayer={resetPlayer} callbackButton={callbackButton}/>
+                            <GapContainer setDropTime={setDropTime} setGameOver={setGameOver} resetPlayer={resetPlayer} callbackButton={callbackButton}/>
                         </div>
                     )}
                 </aside>

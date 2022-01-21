@@ -2,30 +2,41 @@ import React, {useEffect, useState} from "react";
 import {Paper, TextField} from "@material-ui/core";
 import word from "./word";
 import {Grid, IconButton, Typography} from "@mui/material";
+import {TETROMINOS} from "../../tetrominos";
 
 const paperStyle = {padding: '50px 10px', width: '300px', margin: "60px auto"}
 const textFieldStyle = {fontsize: '30px'}
-const wordButtonStyle= {border:'1px solid #dddddd', borderRadius:'10%', padding: "5px 15px", margin:'10px'}
+const wordButtonStyle = {border: '1px solid #dddddd', borderRadius: '10%', padding: "5px 15px", margin: '10px'}
 
-const signs = ['ó', 'u', 'h','ch','ż','rz']
+const signs = ['ó', 'u', 'h', 'ch', 'ż', 'rz']
 
 const Gap = (props) => {
 
-    const signButtonClick = (sign) =>{
-        if(sign === word.answer){
+    const signButtonClick = (sign) => {
+        if (sign === word.answer) {
             word.points = word.points + 1
             word.correct = word.correct + 1
-            props.resetPlayer()
-        }else {
+            TETROMINOS['slowa'] = TETROMINOS['slowa'].filter(item => item.word !== word.word)
+
+            console.log('TETROMINOS ', TETROMINOS.slowa)
+
+            if (TETROMINOS.slowa.length <= 0) {
+                props.setGameOver(true)
+                props.setDropTime(null)
+                console.log('GAME OVER HERE')
+            } else {
+                props.resetPlayer()
+            }
+        } else {
             word.points = word.points - 1
             word.wrong = word.wrong + 1
         }
     }
 
-    const getSignButton = () =>{
-        return signs.map((sign, index)=>(
+    const getSignButton = () => {
+        return signs.map((sign, index) => (
             <Grid item key={index} xs={4}>
-                <IconButton style={wordButtonStyle} onClick={()=>signButtonClick(sign)}>
+                <IconButton style={wordButtonStyle} onClick={() => signButtonClick(sign)}>
                     <Typography>{sign}</Typography>
                 </IconButton>
             </Grid>
