@@ -27,6 +27,9 @@ const Game = (props) => {
 
     const [callbackButton, setCallbackButton] = useState(false);
 
+    const [answers, setAnswers] = useState([])
+
+
     // console.log('re-render');
 
     const movePlayer = dir => {
@@ -35,26 +38,45 @@ const Game = (props) => {
         }
     }
 
-    useEffect(()=>{
-        if(!gameOver)return
+    useEffect(() => {
+        if (!gameOver) return
 
+        // ilosc punktow
         const score = word.points
+
+        // poprawne odpowiedzi
         const passed = word.correct
+
+        // bledne odpowiedzi
         const failed = word.wrong
+
 
         // TU JEST MIESJCE NA TWOJE ZAPYTANIE Z WYNIKAMI
 
     }, [gameOver])
 
+    const resetWord = () => {
+        word.word = ''
+        word.answer = ''
+        word.points = 0
+        word.wrong = 0
+        word.correct = 0
+        word.tempo = 500
+    }
+
     const startGame = () => {
         //reset
+        word.init()
+        resetWord()
+        setAnswers([])
         setStage(createStage());
         setCallbackButton(true);
+
         setDropTime(word.tempo);
         resetPlayer();
         getWordTetromino(3)
         setGameOver(false);
-        word.init()
+
     }
 
     const drop = () => {
@@ -97,7 +119,8 @@ const Game = (props) => {
                             <Display text={`Punkty: ${word.points}`}/>
                             <Display text={`Poprawnych: ${word.correct}`}/>
                             <Display text={`Błędne: ${word.wrong}`}/>
-                            <GapContainer setDropTime={setDropTime} setGameOver={setGameOver} resetPlayer={resetPlayer} callbackButton={callbackButton}/>
+                            <GapContainer setDropTime={setDropTime} setGameOver={setGameOver} resetPlayer={resetPlayer}
+                                          callbackButton={callbackButton}/>
                         </div>
                     )}
                 </aside>
